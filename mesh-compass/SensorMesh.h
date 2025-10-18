@@ -44,6 +44,17 @@
 #define MAX_SEARCH_RESULTS      8
 #define MAX_CONCURRENT_ALERTS   4
 
+class GeoPosition {
+  public:
+  GeoPosition(float lat, float lon);
+  float diff_meters(float lat, float lon);
+  void update(float lat, float lon);
+  protected:
+  float _lat;
+  float _lon;
+}
+
+
 class SensorMesh : public mesh::Mesh, public CommonCLICallbacks {
 public:
   SensorMesh(mesh::MainBoard& board, mesh::Radio& radio, mesh::MillisecondClock& ms, mesh::RNG& rng, mesh::RTCClock& rtc, mesh::MeshTables& tables);
@@ -142,6 +153,7 @@ private:
   float pending_bw;
   uint8_t pending_sf;
   uint8_t pending_cr;
+  GeoPosition _last_position;
 
   uint8_t handleLoginReq(const mesh::Identity& sender, const uint8_t* secret, uint32_t sender_timestamp, const uint8_t* data);
   uint8_t handleRequest(uint8_t perms, uint32_t sender_timestamp, uint8_t req_type, uint8_t* payload, size_t payload_len);
