@@ -66,10 +66,6 @@
 
 #define ALERT_ACK_EXPIRY_MILLIS         8000   // wait 8 secs for ACKs to alert messages
 
-#define DEG_TO_RAD(deg) (deg * M_PI / 180.0)
-#define EARTH_CIRCUMFRENCE 40074997.0  // meters
-#define EARTH_RADIUS 6378137.0  // meters
-
 static File openAppend(FILESYSTEM* _fs, const char* fname) {
   #if defined(NRF52_PLATFORM) || defined(STM32_PLATFORM)
     return _fs->open(fname, FILE_O_WRITE);
@@ -176,26 +172,6 @@ static uint8_t putFloat(uint8_t * dest, float value, uint8_t size, uint32_t mult
   }
   return size;
 }
-
-GeoPosition::GeoPosition(float lat, float lon) {
-  _lat = lat;
-  _lon = lon;
-}
-
-float GeoPosition::diff_meters(float lat, float lon) {
-  // Uses haversine formula to get distance between two points in meters.
-  float d_lon_rad = DEG_TO_RAD(lon - _lon);
-  float d_lat_rad = DEG_TO_RAD(lat - _lat);
-  a = sq(sin(d_lat_rad / 2)) + cos(DEG_TO_RAD(_lat)) * cos(DEG_TO_RAD(lat) * sq(sin(d_lon_rad / 2));
-  c = 2 * atan2(sqrt(a), sqrt(1 - a));
-  return EARTH_RADIUS * c;
-}
-
-void GeoPosition::update(float lat, float lon) {
-  _lat = lat;
-  _lon = lon;
-}
-
 
 uint8_t SensorMesh::handleRequest(uint8_t perms, uint32_t sender_timestamp, uint8_t req_type, uint8_t* payload, size_t payload_len) {
   memcpy(reply_data, &sender_timestamp, 4);   // reflect sender_timestamp back in response packet (kind of like a 'tag')
@@ -709,7 +685,7 @@ SensorMesh::SensorMesh(mesh::MainBoard& board, mesh::Radio& radio, mesh::Millise
   _prefs.disable_fwd = true;
   _prefs.flood_max = 64;
   _prefs.interference_threshold = 0;  // disabled
-  _last_position = GeoPosition(ADVERT_LAT, ADVERT_LON);  
+  _last_position = Location(ADVERT_LAT, ADVERT_LON);  
 }
 
 void SensorMesh::begin(FILESYSTEM* fs) {

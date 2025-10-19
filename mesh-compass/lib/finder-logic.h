@@ -1,8 +1,11 @@
 /* Given the compass, gps, and remote telemetry tell the display how to steer the user
  *
  */
-#define FINDER_UNSET 255
-#define FINDER_ERROR 245
+
+#include "common.h"
+
+#define ORIENTATION_CHECK_INTERVAL_MS 50
+
 
 class FinderNode {
 
@@ -21,9 +24,14 @@ class FinderNode {
 class FinderSelf : FinderNode {
 
 	FinderTarget _target;
+	Accelerometer _accel;
+	Compass _compass;
 
+	FinderSelf(MyMesh mesh);
+	void loop();
+	void find_home();
+	void find_target();
 	float direction_to_target();
-	float heading();
 	float heading_to_target();
 }
 
@@ -31,6 +39,10 @@ class FinderTarget : FinderNode {
 
 	bool _is_set = false;
 
+	float last_mod = 0;
+	uint8_t battery_status;
+
+	void from_config() = 0;
 	bool is_set();
 	void set_address(fixme_node_address_type address);
 }

@@ -24,6 +24,8 @@
 #include <RTClib.h>
 #include <target.h>
 
+#include "lib/common.h"
+
 #define PERM_RESERVED1         (1 << 2)
 #define PERM_RESERVED2         (1 << 3)
 #define PERM_RESERVED3         (1 << 4)
@@ -31,28 +33,10 @@
 #define PERM_RECV_ALERTS_LO    (1 << 6)   // low priority alerts
 #define PERM_RECV_ALERTS_HI    (1 << 7)   // high priority alerts
 
-#ifndef FIRMWARE_BUILD_DATE
-  #define FIRMWARE_BUILD_DATE   "2 Oct 2025"
-#endif
-
-#ifndef FIRMWARE_VERSION
-  #define FIRMWARE_VERSION   "v1.9.1"
-#endif
-
 #define FIRMWARE_ROLE "sensor"
 
 #define MAX_SEARCH_RESULTS      8
 #define MAX_CONCURRENT_ALERTS   4
-
-class GeoPosition {
-  public:
-  GeoPosition(float lat, float lon);
-  float diff_meters(float lat, float lon);
-  void update(float lat, float lon);
-  protected:
-  float _lat;
-  float _lon;
-}
 
 
 class SensorMesh : public mesh::Mesh, public CommonCLICallbacks {

@@ -1,21 +1,30 @@
+#pragma once
+
 /* Transform the compass sensor output into a useful format. 
  *
  */
 
-// Float sized Pi (regular rounded)
-#define PI 3.141593
+#include <Adafruit_LSM303DLH_Mag.h>
+#include <Adafruit_Sensor.h>
+#include <Wire.h> // FIXME: is this needed?
+
+#include "common.h"
+
+#ifndef COMPASS_DEVICE_ID
+  #define COMPASS_DEVICE_ID 38823
+#endif
 
 
 class Compass {
 
 	protected:
-	fixme_sensor_type sensor;
+		Adafruit_LSM303DLH_Mag_Unified sensor;
 
 	public:
-	Compass::Compass(const uint_8 device_id);
-	// Do last minute setup
-	void begin();
-	// Return the heading of this node
-	float heading();
+		Compass::Compass();
+		// Do last minute setup
+		void begin();
+		// Return the heading of this node
+		float heading_rad();
 
 }

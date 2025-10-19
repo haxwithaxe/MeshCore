@@ -1,6 +1,8 @@
 #include "SensorMesh.h"
 #include "lib/compass-sensor.h"
+#include "lib/accelerometer-sensor.h"
 #include "lib/finder-logic.h"
+#include "lib/display-logic.h"
 #ifdef DISPLAY_CLASS
   #include "UITask.h"
   static UITask ui_task(display);
@@ -46,9 +48,9 @@ StdRNG fast_rng;
 SimpleMeshTables tables;
 
 MyMesh the_mesh(board, radio_driver, *new ArduinoMillis(), fast_rng, rtc_clock, tables);
-Compass compass;
-FinderNode target_node;
-SelfNode self_node;
+Accelerometer accel;
+FinderSelf finder;
+NavDisplay nav_display;
 
 void halt() {
   while (1) ;
@@ -113,9 +115,7 @@ void setup() {
 #ifdef DISPLAY_CLASS
   ui_task.begin(the_mesh.getNodePrefs(), FIRMWARE_BUILD_DATE, FIRMWARE_VERSION);
 #endif
-  compass = Compass();
-  target_node = FinderNode(&the_mesh);
-  self_node = SelfNode(&the_mesh);
+  finder = FinderSelf(&the_mesh);
   // send out initial Advertisement to the mesh
   the_mesh.sendSelfAdvertisement(16000);
 }
@@ -139,9 +139,9 @@ void loop() {
     char reply[160];
     the_mesh.handleCommand(0, command, reply);  // NOTE: there is no sender_timestamp via serial!
     if (reply[0]) {
-      Serial.print("  -> "); Serial.println(reply);
+      Serial.print("  -> ");
+      Serial.println(reply);
     }
-
     command[0] = 0;  // reset command buffer
   }
 
@@ -150,4 +150,8 @@ void loop() {
 #ifdef DISPLAY_CLASS
   ui_task.loop();
 #endif
+  // FIXME: update finder state?
+  finder.loop();
+  // FIXME: update LED array
+  nav_display.loop();
 }
