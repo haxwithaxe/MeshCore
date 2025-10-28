@@ -7,7 +7,7 @@
  *
  */
 
-FinderNode::FinderNode(SensorMesh *mesh) {
+FinderNode::FinderNode(MyMesh *mesh) {
   _mesh = &mesh;
 }
 
@@ -21,7 +21,7 @@ float FinderNode::lon() {
   return _last_location.lon;
 }
 
-FinderSelf::FinderSelf(SensorMesh *mesh) {
+FinderSelf::FinderSelf(MyMesh *mesh) {
   _mesh = &mesh;
   _target = FinderTarget();
   _accel = Accelerometer();

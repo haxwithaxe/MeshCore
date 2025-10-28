@@ -1,12 +1,16 @@
 #pragma once
 
+#include <Adafruit_NeoPixel.h>
+
 #include "common.h"
 
 
 class NavDisplay {
 
+  protected:
   Adafruit_NeoPixel _strip;
 
+  public:
   NavDisplay();
   void begin();
   void loop();
@@ -24,4 +28,4 @@ class NavDisplay {
   // Do something to alert the user of a serious error
   // blink/pulse/chase?
   void set_error(bool enable);
-}
+};

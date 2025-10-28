@@ -17,14 +17,14 @@
 
 class Compass {
 
-	protected:
-		Adafruit_LSM303DLH_Mag_Unified sensor;
+  protected:
+    Adafruit_LSM303DLH_Mag_Unified sensor;
 
-	public:
-		Compass::Compass();
-		// Do last minute setup
-		void begin();
-		// Return the heading of this node
-		float heading_rad();
+  public:
+    Compass();
+    // Do last minute setup
+    void begin();
+    // Return the heading of this node
+    float heading_rad();
 
-}
+};

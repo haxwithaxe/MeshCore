@@ -21,14 +21,14 @@
 
 class Accelerometer {
 
-	protected:
-		Adafruit_LSM303_Accel_Unified sensor;
+  protected:
+    Adafruit_LSM303_Accel_Unified sensor;
 
-	public:
-		Accelerometer();
-		// Do last minute setup
-		void begin();
-		// Return the orientation of the node
-		orientation_up_t upside();
+  public:
+    Accelerometer();
+    // Do last minute setup
+    void begin();
+    // Return the orientation of the node
+    orientation_up_t upside();
 
-}
+};

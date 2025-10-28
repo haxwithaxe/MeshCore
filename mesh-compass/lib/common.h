@@ -12,16 +12,16 @@
 #define EARTH_RADIUS 6378137.0  // meters
 
 typedef enum {
-	HOME_UP
-	TARGET_UP
-	NEITHER_UP
+  HOME_UP,
+  TARGET_UP,
+  NEITHER_UP
 } orientation_up_t;
 
 
 /* Normalize radians to no more than a full rotation.
  * 
  * Arguments:
- *	rads: Some number or radians as a float.
+ *  rads: Some number or radians as a float.
  *
  */
 float normalize_radians(float rads);
@@ -45,4 +45,4 @@ class Location {
     void update(float lat_, float lon_);
 
     bool is_set();
-}
+};
